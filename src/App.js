@@ -1,23 +1,35 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header/Header';
+import CardItem from './components/CardItem/CardItem';
+import { useEffect, useState } from 'react';
 
 function App() {
+
+  // states
+  const [serchName, setSerchName] = useState('');
+  const [pokemonData, setPokemonData] = useState({});
+
+  // check object length
+  const objLenth = Object.keys(pokemonData).length;
+
+  useEffect(() => {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${serchName.pokemonName}`)
+      .then(res => res.json())
+      .then(data => setPokemonData(data));
+  }, [serchName])
+
+
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header setSerchName={setSerchName} />
+      {
+        objLenth ? <CardItem data={pokemonData} /> : ''
+      }
     </div>
   );
 }
